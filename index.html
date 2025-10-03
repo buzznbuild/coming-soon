@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coming Soon — BuzzNBuild</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styles on top of Tailwind */
+    :root{
+      --bg-1:#05050a;
+      --bg-2:#060615;
+      --accent:#4f2bff; /* deep electric purple */
+      --glow:#1e1bff;
+    }
+
+    html,body,#app{height:100%;}
+    body{
+      background: radial-gradient(1200px 600px at 50% 10%, rgba(30,24,80,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 100%);
+      color:#e6e6ef;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      overflow:hidden;
+    }
+
+    /* Center container */
+    .stage{height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+
+    /* The blackhole semicircle */
+    .blackhole-wrap{position:relative;width:780px;max-width:92vw;height:360px;display:flex;align-items:flex-end;justify-content:center}
+    .blackhole{
+      width:720px;height:360px;border-radius:360px 360px 0 0/360px 360px 0 0; /* semicircle */
+      background:conic-gradient(from 180deg at 50% 50%, rgba(0,0,0,0.95), rgba(10,10,14,0.98));
+      position:relative;overflow:hidden;transform:translateY(6px);
+      box-shadow: 0 -40px 120px rgba(20,16,55,0.7) inset;
+    }
+
+    /* Outer glow */
+    .halo{
+      position:absolute;left:50%;top:-40%;transform:translateX(-50%);
+      width:820px;height:420px;border-radius:50%;
+      background: radial-gradient(closest-side, rgba(79,43,255,0.25), transparent 45%);
+      filter: blur(40px);
+      mix-blend-mode:screen;opacity:0.9;pointer-events:none;
+    }
+
+    /* Subtle rim light at top of semicircle */
+    .rim{
+      position:absolute;left:50%;top:30%;transform:translateX(-50%);
+      width:640px;height:200px;border-radius:50%;opacity:0.9;pointer-events:none;
+      background: linear-gradient(180deg, rgba(95,70,255,0.35), rgba(24,20,60,0));
+      filter: blur(18px);
+      mix-blend-mode:screen;
+    }
+
+    /* Glow streaks */
+    .glow-stripe{
+      position:absolute;left:50%;top:20%;transform:translateX(-50%);
+      width:560px;height:6px;border-radius:999px;background:linear-gradient(90deg, rgba(79,43,255,0.9), rgba(0,255,212,0.3));opacity:0.18;filter:blur(6px)
+    }
+
+    /* Text area */
+    .coming-wrap{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);text-align:center;width:100%}
+    .coming{letter-spacing:26px;font-size:24px;font-weight:600;color:rgba(230,230,239,0.92);}
+    
+    /* Brand & tagline closer */
+    .subtitle{margin-top:10px;letter-spacing:6px;color:rgba(140,160,255,0.85);font-weight:600;font-size:18px}
+    .tag{margin-top:6px;color:rgba(160,170,200,0.7);font-size:13px;letter-spacing:2px}
+
+    /* Sleek Mail Button */
+    .mail{
+        margin-top:6px;color:rgba(160,170,200,0.7);font-size:13px;letter-spacing:2px}
+
+
+
+    /* Small screens tweak */
+    @media (max-width:640px){
+      .blackhole-wrap{height:260px}
+      .blackhole{width:92vw;height:220px}
+      .halo{width:110vw;height:360px}
+      .coming{letter-spacing:10px;font-size:18px}
+      .subtitle{letter-spacing:3px;font-size:16px}
+      .tag{font-size:12px}
+      #mail {font-size:12px;padding:8px 16px;margin-top:24px;}
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="stage">
+    <div class="blackhole-wrap">
+      <div class="blackhole" id="blackhole">
+        <div class="halo" id="halo"></div>
+        <div class="rim" id="rim"></div>
+        <div class="glow-stripe" id="stripe" style="top:18%"></div>
+        <div class="glow-stripe" id="stripe2" style="top:12%;width:420px;opacity:0.12"></div>
+        <div class="coming-wrap">
+          <div id="comingText" class="coming">C O M I N G&nbsp; S O O N</div>
+          <div id="subtitleText" class="subtitle mt-4">B U Z Z n B U I L D</div>
+          <div id="tag" class="tag uppercase">Building your buzz, shaping your brand</div>
+          <div class="block mt-4 ">
+          <a id="mail" class="mail uppercase" href="mailto:contact@buzznbuild.in">contact@buzznbuild.in</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.0/gsap.min.js"></script>
+  <script>
+    const tl = gsap.timeline({defaults:{ease:"power3.out"}});
+
+    // initial subtle entrance
+    tl.from('body', {duration:0.6, opacity:0, ease:"power1.out"}, 0);
+
+    // halo pop and pulse
+    tl.from('#halo', {duration:1.2, scale:0.85, opacity:0, transformOrigin:'50% 50%'}, 0.2);
+    tl.to('#halo', {duration:2.6, scale:1.05, repeat:-1, yoyo:true, ease:'sine.inOut', opacity:0.95}, 0.6);
+
+    // rim light slide
+    tl.from('#rim', {duration:1.0, y:-30, opacity:0}, 0.3);
+
+    // subtle stripe sweep
+    tl.from('#stripe', {duration:1.2, x:-80, opacity:0, ease:'power2.out'}, 0.5);
+    tl.to('#stripe', {duration:3.0, x:80, repeat:-1, ease:'sine.inOut', yoyo:true}, 1.2);
+    tl.to('#stripe2', {duration:3.4, x:-40, repeat:-1, ease:'sine.inOut', yoyo:true}, 1.0);
+
+    // semicircle rise
+    tl.from('#blackhole', {duration:1.1, y:30, scaleY:0.98, opacity:0, transformOrigin:'50% 100%'}, 0.25);
+
+    // animate "COMING SOON"
+    const coming = document.getElementById('comingText');
+    const txt = coming.textContent.trim();
+    coming.innerHTML = txt.split('').map(c => {
+      if(c === ' ') return '<span class="char" style="display:inline-block;width:8px">&nbsp;</span>';
+      return `<span class="char" style="display:inline-block;opacity:0;transform:translateY(12px)">${c}</span>`;
+    }).join('');
+    gsap.to('#comingText .char', {duration:0.9, opacity:1, y:0, stagger:0.08, delay:1.2, ease:'back.out(1.2)'});
+
+    // brand name + tagline
+    gsap.from('#subtitleText', {duration:0.9, y:10, opacity:0, delay:1.9});
+    gsap.from('#tag', {duration:0.9, y:10, opacity:0, delay:2.1});
+
+    // mail
+    gsap.from('#mail', {duration:0.9, y:18, opacity:0, delay:2.6, ease:"power2.out"});
+
+    // floating rotation
+    gsap.to('#blackhole', {duration:8, rotation:-0.6, repeat:-1, yoyo:true, ease:'sine.inOut'});
+
+    // halo parallax
+    const halo = document.getElementById('halo');
+    document.addEventListener('mousemove', (e)=>{
+      const cx = window.innerWidth/2, cy = window.innerHeight/2;
+      const dx = (e.clientX - cx)/cx;
+      const dy = (e.clientY - cy)/cy;
+      gsap.to(halo, {duration:0.9, x:dx*18, y:dy*12, ease:'expo.out'});
+    });
+
+    // Mail hover effect
+    const mail = document.getElementById('mail');
+    mail.addEventListener("mouseenter", () => {
+      gsap.to(mail, {duration:0.4, scale:1.08, color:"#ffffff", borderColor:"#4f2bff", backgroundColor:"rgba(79,43,255,0.08)", textShadow:"0px 0px 10px #4f2bff"});
+    });
+    mail.addEventListener("mouseleave", () => {
+      gsap.to(mail, {duration:0.4, scale:1, color:"rgba(200,210,255,0.75)", borderColor:"rgba(79,43,255,0.4)", backgroundColor:"transparent", textShadow:"0px 0px 0px transparent"});
+    });
+  </script>
+</body>
+</html>
